@@ -1,7 +1,7 @@
 module "stack_breakglass" {
-  source = "terraform-aws-cloudformation"
+  source = "../"
 
-  parameters = {
+  parameters_map = {
     Username = "ErickE"
     Password = "MySecret$$@s2"
   }
@@ -9,3 +9,4 @@ module "stack_breakglass" {
   cloudformation_stack_name = "Test1"
   stack_template_body = "templates/cloudformation/stack_template_body.yaml"
 }
+
