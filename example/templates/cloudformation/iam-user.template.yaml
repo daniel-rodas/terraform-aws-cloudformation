@@ -1,0 +1,87 @@
+# https://austincloud.guru/2020/01/09/using-cloudformation-with-terraform/
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS CloudFormation Breakglass Template IAM_Users_Groups_and_Policies: Breakglass
+  template showing how to create IAM users, groups and policies. It creates a
+  single user that is a member of a users group and an admin group. The groups
+  each have different IAM policies associated with them. Note: This example also
+  creates an AWSAccessKeyId/AWSSecretKey pair associated with the new user.
+Parameters:
+  Username:
+    Type: String
+    Description: New account username
+  Password:
+    NoEcho: 'true'
+    Type: String
+    Description: New account password
+    MinLength: '1'
+    MaxLength: '41'
+    ConstraintDescription: the password must be between 1 and 41 characters
+Resources:
+  BreakglassUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: !Ref Username
+      LoginProfile:
+        Password: !Ref Password
+  BreakglassUserGroup:
+    Type: 'AWS::IAM::Group'
+  BreakglassAdminGroup:
+    Type: 'AWS::IAM::Group'
+  Users:
+    Type: 'AWS::IAM::UserToGroupAddition'
+    Properties:
+      GroupName: !Ref BreakglassUserGroup
+      Users:
+        - !Ref BreakglassUser
+  Admins:
+    Type: 'AWS::IAM::UserToGroupAddition'
+    Properties:
+      GroupName: !Ref BreakglassAdminGroup
+      Users:
+        - !Ref BreakglassUser
+  BreakglassUserPolicies:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: BreakglassUsers
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'ec2:*'
+              - 'elasticloadbalancing:*'
+              - 'cloudwatch:*'
+              - 'autoscaling:*'
+              - 'elasticloadbalancing:*'
+            Resource: '*'
+        # Statement:
+        #   - Effect: Allow
+        #     Action:
+        #       - 'iam:CreateServiceLinkedRole'
+        #     Resource: '*'
+      Groups:
+        - !Ref BreakglassUserGroup
+  BreakglassAdminPolicies:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: BreakglassAdmins
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: '*'
+            Resource: '*'
+      Groups:
+        - !Ref BreakglassAdminGroup
+  BreakglassKeys:
+    Type: 'AWS::IAM::AccessKey'
+    Properties:
+      UserName: !Ref BreakglassUser
+Outputs:
+  AccessKey:
+    Value: !Ref BreakglassKeys
+    Description: AWSAccessKeyId of new user
+  SecretKey:
+    Value: !GetAtt 
+      - BreakglassKeys
+      - SecretAccessKey
+    Description: AWSSecretKey of new user
