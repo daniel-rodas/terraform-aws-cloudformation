@@ -18,6 +18,12 @@ variable "capabilities" {
   ]
 }
 
-variable "stack_template_body" {
+variable "parameters_map" {
   type = map(string)
 }
+
+variable "stack_template_body" {
+  type = string
+}
+
+
