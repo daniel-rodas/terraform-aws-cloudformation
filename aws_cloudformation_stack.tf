@@ -4,5 +4,5 @@ resource "aws_cloudformation_stack" "stack" {
   parameters = var.parameters_map
 
   capabilities  = var.capabilities
-  template_body = file(var.stack_template_body)
+  template_body = var.stack_template_body
 }
