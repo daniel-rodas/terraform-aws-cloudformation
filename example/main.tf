@@ -7,6 +7,9 @@ module "stack_breakglass" {
   }
 
   cloudformation_stack_name = "Test1"
-  stack_template_body = "templates/cloudformation/stack_template_body.yaml"
+  stack_template_body       = data.local_file.template.content
 }
 
+data "local_file" "template" {
+  filename = "./templates/cloudformation/iam-user.template.yaml"
+}
