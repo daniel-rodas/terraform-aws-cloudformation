@@ -23,7 +23,6 @@ variable "parameters_map" {
 }
 
 variable "stack_template_body" {
-  type = string
+  default = null
 }
-
 
