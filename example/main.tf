@@ -2,8 +2,8 @@ module "stack_breakglass" {
   source = "../"
 
   parameters_map = {
-    Username = "ErickE"
-    Password = "MySecret$$@s2"
+    Username = "User_1"
+    Password = var.iam_user_password
   }
 
   cloudformation_stack_name = "Test1"
@@ -12,4 +12,8 @@ module "stack_breakglass" {
 
 data "local_file" "template" {
   filename = "./templates/cloudformation/iam-user.template.yaml"
+}
+
+variable "iam_user_password" {
+  sensative = true
 }
