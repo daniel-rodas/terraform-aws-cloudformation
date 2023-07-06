@@ -1,0 +1,35 @@
+{
+    "Parameters" : {
+        "UsernameList" : {
+          "Type" : "CommaDelimitedList",
+          "Description" : "Username for special account."
+        }
+      },
+    "Resources": {
+        "TFCFTestRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": [
+                                    {"Fn::Join" : ["arn:aws:iam::719774287182:user/",[ {"Ref" : "UsernameList"} ] ]} 
+                                ]
+                            },
+                            "Action": "sts:AssumeRole",
+                            "Resource": "*"
+                        }
+                    ]
+                },
+                "Description": "StackSet to deploy policy to AssumeRole for Administrators",
+                "ManagedPolicyArns": [
+                    "arn:aws::iam:aws:policy/AdministratorAccess"
+                ],
+                "RoleName": "BreakGlassAdministratorAccess"
+            }
+        }
+    }
+}

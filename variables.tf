@@ -1,28 +1,33 @@
-variable "cloudformation_stack_name" {
+variable "stackset_name" {
   type = string
+  default = null
 }
-
-# variable "iam_user_name" {
-#     type = string
-# }
-
-# variable "iam_user_password" {
-#     type = string
-#     sensitive = true
-# }
 
 variable "capabilities" {
   default = [
     "CAPABILITY_IAM",
-    "CAPABILITY_NAMED_IAM"
+    "CAPABILITY_NAMED_IAM",
+    "CAPABILITY_AUTO_EXPAND"
   ]
 }
 
-variable "parameters_map" {
-  type = map(string)
-}
-
-variable "stack_template_body" {
+variable "stackset_parameters_map" {
+  type    = map(string)
   default = null
 }
 
+
+variable "stackset_template_body" {
+
+  default = null
+}
+
+variable "stacksetinstance_deployment_targets" {
+  type = object({
+    organizational_unit_ids = list(string)
+  })
+
+  default = {
+    organizational_unit_ids = null
+  }
+}

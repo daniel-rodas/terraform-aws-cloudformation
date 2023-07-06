@@ -1,0 +1,28 @@
+{
+    "Resources": {
+        "TFCFTestRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": [
+                                    "arn:aws:iam::719774287182:user/alice"
+                                ]
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Description": "StackSet to deploy policy to AssumeRole for Administrators",
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/PowerUserAccess"
+                ],
+                "RoleName": "BreakGlassAdministratorAccess"
+            }
+        }
+    }
+}
