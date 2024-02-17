@@ -9,6 +9,19 @@ resource "aws_iam_user" "breakglass" {
     name = each.key
 }
 
+resource "aws_iam_user_login_profile" "profile" { 
+  user    = aws_iam_user.breakglass["brocko"].name
+  pgp_key = "keybase:username1"
+  password_length = 24
+  password_reset_required = true
+
+#     lifecycle {
+#   ignore_changes = [
+#     password_reset_required
+#   ]
+# }
+}
+
 resource "aws_iam_policy" "breakglass" {
   name        = "test-policy-01"
   description = "A test policy - 01"
